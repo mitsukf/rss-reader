@@ -1,8 +1,6 @@
 <template>
   <section class="container">
-    <h1 class="h1">
-      RSSリーダー - {{ $route.query.profile }}
-    </h1>
+    <h1 class="h1">RSSリーダー - {{ $route.query.profile }}</h1>
     <button @click="get">
       データ取得
     </button>
@@ -23,7 +21,7 @@ export default {
     ...mapGetters(['reader'])
   },
   methods: {
-    get (value) {
+    get(value) {
       this.$store.dispatch('reader/readRss')
     }
   }

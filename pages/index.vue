@@ -1,8 +1,6 @@
 <template>
   <section class="container">
-    <h1 class="h1">
-      RSSリーダー - トップ
-    </h1>
+    <h1 class="h1">RSSリーダー - トップ</h1>
     <table class="table table-striped">
       <tbody>
         <tr>
