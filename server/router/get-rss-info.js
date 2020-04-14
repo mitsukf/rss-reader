@@ -2,7 +2,13 @@ const Router = require('express').Router
 
 const router = Router()
 
-router.get('/getRssInfo', (req, res) => {
+router.get('/getRssInfo', async (req, res) => {
+  await new Promise((resolve) => {
+    // 画面表示確認のためのディレイ
+    setTimeout(() => {
+      resolve()
+    }, 500)
+  })
   // 画面出力のためのmock返却
   const mockResponse = []
   for (let i = 1; i <= 5; i++) {

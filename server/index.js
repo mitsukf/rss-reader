@@ -8,7 +8,7 @@ const router = require('./router')
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
 
-async function start () {
+async function start() {
   // Init Nuxt.js
   const nuxt = new Nuxt(config)
 
@@ -24,6 +24,9 @@ async function start () {
   // Give nuxt middleware to express
   app.use('/api', router)
   app.use(nuxt.render)
+
+  // eslint-disable-next-line no-console
+  process.on('unhandledRejection', console.dir)
 
   // Listen the server
   app.listen(port, host)
