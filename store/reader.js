@@ -7,9 +7,14 @@ export const state = () => ({
 
 export const actions = {
   async readRss({ commit }) {
-    const res = await this.$axios.get('/api/getRssInfo')
-    for (const data of res.data) {
-      commit('addRssItem', data)
+    try {
+      const res = await this.$axios.get('/api/getRssInfo')
+      for (const data of res.data) {
+        commit('addRssItem', data)
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err)
     }
   }
 }

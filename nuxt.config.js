@@ -50,7 +50,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: '/'
+    baseURL: process.env.API_HOST || '/'
   },
   /*
   ** Build configuration
