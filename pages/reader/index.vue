@@ -4,20 +4,24 @@
     <table class="table table-striped">
       <tbody>
         <tr v-for="rss in rssList" :key="rss.id" class="container">
-          <div class="row">
+          <div class="row txt1">
             <div class="col-4">{{ rss.item.date }}</div>
-            <div class="col-4">{{ rss.site.name }}</div>
+            <a :href="rss.site.link" class="col-4 txt3">{{
+              rss.site.name
+            }}</a>
           </div>
-          <div class="row">
-            <div class="col-12">{{ rss.item.title }}</div>
+          <div class="row txt2">
+            <div class="col-12">
+              <a :href="rss.item.link">{{ rss.item.title }}</a>
+            </div>
           </div>
         </tr>
       </tbody>
     </table>
     <client-only>
       <infinite-loading spinner="circle" @infinite="infiniteHandler">
-        <span slot="no-more">-----検索結果は以上です-----</span>
-        <span slot="no-results">-----検索結果はありません-----</span>
+        <span slot="no-more">-----読み込み完了-----</span>
+        <span slot="no-results">-----読み込み結果はありません-----</span>
       </infinite-loading>
     </client-only>
   </section>
@@ -41,11 +45,17 @@ export default {
   },
   methods: {
     async infiniteHandler($state) {
-      await this.get()
-      $state.loaded()
+      if (this.loading) return
+
+      const response = await this.get()
+      if (response > 0) {
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
     },
     async get(value) {
-      await this.$store.dispatch('reader/readRss')
+      return await this.$store.dispatch('reader/readRss')
     }
   }
 }
@@ -54,5 +64,15 @@ export default {
 <style>
 .container {
   max-width: 730px;
+}
+.txt1 {
+  font-size: 12px;
+  color: #999999;
+}
+.txt2 {
+  font-size: 18px;
+}
+a.txt3 {
+  color: #999999;
 }
 </style>

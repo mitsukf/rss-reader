@@ -2,16 +2,22 @@ const Router = require('express').Router
 
 const router = Router()
 
-router.get('/getRssInfo', async (req, res) => {
-  await new Promise((resolve) => {
-    // 画面表示確認のためのディレイ
-    setTimeout(() => {
-      resolve()
-    }, 500)
-  })
+router.get('/getRssInfo', (req, res) => {
+  const offset = Number.isInteger(Number(req.query.offset))
+    ? Number(req.query.offset)
+    : 0
+  const count = Number.isInteger(Number(req.query.count))
+    ? Number(req.query.count)
+    : 20
+
+  if (offset >= 100) {
+    res.json([])
+    return
+  }
+
   // 画面出力のためのmock返却
   const mockResponse = []
-  for (let i = 1; i <= 5; i++) {
+  for (let i = offset; i < offset + count; i++) {
     mockResponse.push({
       site: {
         name: `提供元サイト${i}`,
