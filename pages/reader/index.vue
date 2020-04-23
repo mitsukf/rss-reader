@@ -1,30 +1,36 @@
 <template>
-  <section class="container">
-    <h1 class="h1">RSSリーダー - {{ $route.query.profile }}</h1>
-    <table class="table table-striped">
-      <tbody>
-        <tr v-for="rss in rssList" :key="rss.id" class="container">
-          <div class="row txt1">
-            <div class="col-4">{{ rss.item.date }}</div>
-            <a :href="rss.site.link" class="col-4 txt3">{{
-              rss.site.name
-            }}</a>
-          </div>
-          <div class="row txt2">
-            <div class="col-12">
-              <a :href="rss.item.link">{{ rss.item.title }}</a>
+  <div>
+    <nav class="navbar navbar-dark bg-dark" style="padding-left: 20px;">
+      <a href="/" class="navbar-brand">RSSリーダー - {{ $route.query.profile }}</a>
+    </nav>
+    <section class="container-fluid bg-secondary" style="padding-left: 20px;">
+      <table class="table">
+        <tbody>
+          <tr v-for="rss in rssList" :key="rss.id">
+            <div class="border rounded-lg bg-light" style="margin-top: 10px;padding: 10px">
+              <div class="row txt1">
+                <div class="col-4">{{ rss.item.date }}</div>
+                <a :href="rss.site.link" class="col-4 txt3">{{
+                  rss.site.name
+                }}</a>
+              </div>
+              <div class="row txt2">
+                <div class="col-12">
+                  <a :href="rss.item.link">{{ rss.item.title }}</a>
+                </div>
+              </div>
             </div>
-          </div>
-        </tr>
-      </tbody>
-    </table>
-    <client-only>
-      <infinite-loading spinner="circle" @infinite="infiniteHandler">
-        <span slot="no-more">-----読み込み完了-----</span>
-        <span slot="no-results">-----読み込み結果はありません-----</span>
-      </infinite-loading>
-    </client-only>
-  </section>
+          </tr>
+        </tbody>
+      </table>
+      <client-only>
+        <infinite-loading spinner="circle" @infinite="infiniteHandler">
+          <span slot="no-more">-----読み込み完了-----</span>
+          <span slot="no-results">-----読み込み結果はありません-----</span>
+        </infinite-loading>
+      </client-only>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -62,15 +68,12 @@ export default {
 </script>
 
 <style>
-.container {
-  max-width: 730px;
-}
 .txt1 {
   font-size: 12px;
   color: #999999;
 }
 .txt2 {
-  font-size: 18px;
+  font-size: 16px;
 }
 a.txt3 {
   color: #999999;
