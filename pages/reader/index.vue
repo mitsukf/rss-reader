@@ -1,22 +1,31 @@
 <template>
   <div>
     <nav class="navbar navbar-dark bg-dark" style="padding-left: 20px;">
-      <a href="/" class="navbar-brand">RSSリーダー - {{ $route.query.profile }}</a>
+      <a href="/" class="navbar-brand"
+        >RSSリーダー - {{ $route.query.profile }}
+      </a>
     </nav>
     <section class="container-fluid bg-secondary" style="padding-left: 20px;">
       <table class="table">
         <tbody>
           <tr v-for="rss in rssList" :key="rss.id">
-            <div class="border rounded-lg bg-light" style="margin-top: 10px;padding: 10px">
+            <div
+              class="border rounded-lg bg-light"
+              style="margin-top: 10px; padding: 10px;"
+            >
               <div class="row txt1">
                 <div class="col-4">{{ rss.item.date }}</div>
-                <a :href="rss.site.link" class="col-4 txt3">{{
-                  rss.site.name
-                }}</a>
+                <div class="col-4 txt3">
+                  <a :href="rss.site.link" target="_blank" class="txt3">{{
+                    rss.site.name
+                  }}</a>
+                </div>
               </div>
               <div class="row txt2">
                 <div class="col-12">
-                  <a :href="rss.item.link">{{ rss.item.title }}</a>
+                  <a :href="rss.item.link" target="_blank">{{
+                    rss.item.title
+                  }}</a>
                 </div>
               </div>
             </div>

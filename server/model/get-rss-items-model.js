@@ -27,22 +27,21 @@ function formatFeedResponse(data) {
 export function getRssItemsModel(xmlList) {
   const feeds = []
   return new Promise((resolve) => {
-    Promise.all(xmlList.map(fetchData))
-      .then((responses) => {
-        // レスポンスをパース
-        for (const response of responses) {
-          feeds.push(...formatFeedResponse(response))
-        }
+    Promise.all(xmlList.map(fetchData)).then((responses) => {
+      // レスポンスをパース
+      for (const response of responses) {
+        feeds.push(...formatFeedResponse(response))
+      }
 
-        // 日付順にソート
-        feeds.sort((a, b) => {
-          if (a.item.date > b.item.date) return -1
-          if (a.item.date < b.item.date) return 1
-          return 0
-        })
-
-        // データ返却
-        resolve(feeds)
+      // 日付順にソート
+      feeds.sort((a, b) => {
+        if (a.item.date > b.item.date) return -1
+        if (a.item.date < b.item.date) return 1
+        return 0
       })
+
+      // データ返却
+      resolve(feeds)
+    })
   })
 }
