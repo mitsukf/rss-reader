@@ -1,10 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-dark bg-dark" style="padding-left: 20px;">
-      <a href="/" class="navbar-brand"
-        >RSSリーダー - {{ $route.query.profile }}
-      </a>
-    </nav>
+    <Nav :title="$route.query.profile" />
     <section class="container-fluid bg-secondary" style="padding-left: 20px;">
       <table class="table">
         <tbody>
@@ -45,9 +41,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
+import Nav from '~/components/Nav'
 
 export default {
   components: {
+    Nav,
     InfiniteLoading
   },
   async fetch({ store }) {

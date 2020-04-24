@@ -1,10 +1,8 @@
 <template>
   <div>
-    <nav class="navbar navbar-dark bg-dark" style="padding-left: 20px;">
-      <a href="/" class="navbar-brand">RSSリーダー</a>
-    </nav>
-    <section class="container">
-      <table class="table table-striped">
+    <Nav />
+    <section class="container-fluid">
+      <table class="table no-border">
         <tbody>
           <tr>
             <td>
@@ -37,6 +35,14 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import Nav from '~/components/Nav'
+
+export default {
+  components: {
+    Nav
+  }
+}
+</script>
 
 <style></style>
