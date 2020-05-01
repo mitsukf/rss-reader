@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Nav title="プロファイル編集" />
+    <Nav title="プロファイル編集" :edit="true" />
     <section class="container-fluid">
       <table class="table no-border">
         <tbody>
@@ -112,6 +112,9 @@ export default {
     },
     inputUrl(url, profileName) {
       this.urls[profileName] = url
+    },
+    save() {
+      this.$store.dispatch('profile/saveProfile')
     }
   }
 }

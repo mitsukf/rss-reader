@@ -9,6 +9,13 @@
       class="border rounded-lg border-white navbar-brand edit"
       >Edit</a
     >
+    <a
+      v-if="edit"
+      href="/"
+      class="border rounded-lg border-white navbar-brand edit bg-danger"
+      @click="save"
+      >Save</a
+    >
   </nav>
 </template>
 
@@ -18,6 +25,15 @@ export default {
     title: {
       type: String,
       default: undefined
+    },
+    edit: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    save() {
+      this.$store.dispatch('profile/saveProfile')
     }
   }
 }
@@ -25,6 +41,7 @@ export default {
 
 <style>
 .edit {
+  font-weight: bold;
   font-size: 14px;
   padding: 10px;
   padding-top: 5px;
