@@ -3,7 +3,12 @@
     <a href="/" class="navbar-brand"
       >RSSリーダー <span v-if="title">- {{ title }}</span></a
     >
-    <a href="/edit" class="navbar-brand" style="font-size: 14px;">Edit</a>
+    <a
+      v-if="!title"
+      href="/edit"
+      class="border rounded-lg border-white navbar-brand edit"
+      >Edit</a
+    >
   </nav>
 </template>
 
@@ -17,3 +22,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.edit {
+  font-size: 14px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+</style>

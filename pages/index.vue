@@ -4,43 +4,33 @@
     <section class="container-fluid">
       <table class="table no-border">
         <tbody>
-          <tr>
+          <tr v-for="profile in profileList" :key="profile.name">
             <td>
-              <nuxt-link to="/reader?profile=ニュース">
-                ニュース
-              </nuxt-link>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <nuxt-link to="/reader?profile=技術系">
-                技術系
-              </nuxt-link>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <nuxt-link to="/reader?profile=趣味">
-                趣味
+              <nuxt-link
+                :to="{ name: 'reader', query: { profile: profile.name } }"
+              >
+                {{ profile.name }}
               </nuxt-link>
             </td>
           </tr>
         </tbody>
       </table>
-
-      <b-button variant="primary">
-        プロファイル編集
-      </b-button>
     </section>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Nav from '~/components/Nav'
 
 export default {
   components: {
     Nav
+  },
+  computed: {
+    ...mapGetters({
+      profileList: 'profile/profileList'
+    })
   }
 }
 </script>

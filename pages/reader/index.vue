@@ -48,8 +48,8 @@ export default {
     Nav,
     InfiniteLoading
   },
-  async fetch({ store }) {
-    await store.dispatch('reader/readRss')
+  async fetch({ store, query }) {
+    await store.dispatch('reader/readRss', query.profile)
   },
   computed: {
     ...mapGetters({

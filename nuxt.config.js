@@ -64,5 +64,8 @@ module.exports = {
   bootstrapVue: {
     bootstrapCSS: false, // or `css`
     bootstrapVueCSS: false // or `bvCSS`
+  },
+  router: {
+    middleware: 'reader'
   }
 }

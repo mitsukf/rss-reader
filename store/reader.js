@@ -1,14 +1,24 @@
 export const state = () => ({
   profile: null,
+  urlList: [],
   rssList: [],
   offset: 0,
   total: 0
 })
 
 export const actions = {
-  async readRss({ state, commit }) {
-    if (state.profile) {
+  async readRss({ rootGetters, state, commit }, profile) {
+    if (profile && state.profile !== profile) {
+      // profileのURL取得
+      const xmlList = []
+      rootGetters['profile/profileList'].map((obj) => {
+        if (obj.name === profile) {
+          xmlList.push(...obj.urlList)
+        }
+      })
+      commit('setProfileInfo', { name: profile, urlList: xmlList })
     }
+
     const getOffset = state.offset
     const getCount = 20
 
@@ -16,7 +26,7 @@ export const actions = {
     try {
       res = await this.$axios.get('/api/getRssItems', {
         params: {
-          profile: '',
+          urlList: state.urlList,
           offset: getOffset,
           count: getCount
         }
@@ -36,6 +46,12 @@ export const actions = {
 }
 
 export const mutations = {
+  setProfileInfo(state, { name, urlList }) {
+    state.profile = name
+    state.urlList = urlList
+    state.rssList = []
+    state.offset = 0
+  },
   addRssItem(state, item) {
     item.id = state.rssList.length + 1
     state.rssList.push(item)

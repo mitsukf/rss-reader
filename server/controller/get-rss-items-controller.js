@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { getRssItemsModel } from '../model/get-rss-items-model'
 
 export async function getRssItemsController(req, res) {
@@ -8,13 +7,13 @@ export async function getRssItemsController(req, res) {
   const count = Number.isInteger(Number(req.query.count))
     ? Number(req.query.count)
     : 20
-  const xmlList = [
-    'http://feeds.cnn.co.jp/rss/cnn/cnn.rdf',
-    'http://feeds.japan.cnet.com/rss/cnet/all.rdf'
-  ]
+  const urlList = []
+  if (!urlList || Array.isArray(req.query.urlList)) {
+    urlList.push(...req.query.urlList)
+  }
 
   // rssアイテムを取得
-  const rssItems = await getRssItemsModel(xmlList)
+  const rssItems = await getRssItemsModel(urlList)
 
   // rssアイテムを切り出し
   if (offset > rssItems.length) {
