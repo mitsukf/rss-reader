@@ -1,5 +1,5 @@
 import Parser from 'rss-parser'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 function fetchData(url) {
   const parser = new Parser()
@@ -17,7 +17,7 @@ function formatFeedResponse(data) {
       item: {
         title: item.title,
         link: item.link,
-        date: moment(item.date).format('YYYY/MM/DD HH:mm')
+        date: moment(item.date).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm')
       }
     })
   }
