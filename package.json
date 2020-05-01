@@ -1,7 +1,7 @@
 {
   "name": "rss-reader",
   "version": "1.0.0",
-  "description": "My legendary Nuxt.js project",
+  "description": "RSSリーダー",
   "author": "mitsukf",
   "private": true,
   "scripts": {
