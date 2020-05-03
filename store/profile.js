@@ -9,9 +9,9 @@ export const actions = {
   addProfile({ state, commit }, name) {
     // profile名チェック
     if (name === '') {
+      // 空文字の場合はエラー
       return false
     }
-
     const result = state.profileList.filter((obj) => obj.name === name)
     if (result.length !== 0) {
       // 同名のprofileが存在する場合はエラー
@@ -22,10 +22,9 @@ export const actions = {
     commit('addProfile', name)
     return true
   },
+  // URL登録
   addUrl({ state, commit }, arg) {
     commit('addUrl', { url: arg.url, name: arg.name })
-    // eslint-disable-next-line no-console
-    console.log(state.profileList)
   },
   // profile移動
   moveProfile({ state, commit }, name, isUp) {
@@ -95,6 +94,20 @@ export const mutations = {
     state.profileList.map((obj) => {
       if (obj.name === arg.name) {
         obj.urlList.push(arg.url)
+      }
+    })
+  },
+  removeProfile(state, profileName) {
+    state.profileList = state.profileList.filter((obj) => {
+      return obj.name !== profileName
+    })
+  },
+  removeUrl(state, arg) {
+    state.profileList.map((obj) => {
+      if (obj.name === arg.name) {
+        obj.urlList = obj.urlList.filter((url) => {
+          return url !== arg.url
+        })
       }
     })
   },

@@ -9,10 +9,22 @@
               <div class="row">
                 <div class="col-4">
                   {{ profile.name }}
+                  &nbsp;<i
+                    class="fas fa-window-close remove-red fa-lg"
+                    @click="removeProfile(profile.name)"
+                  ></i>
                 </div>
                 <ul class="col-4">
-                  <li v-for="(value, index) in profile.urlList" :key="index">
+                  <li
+                    v-for="(value, index) in profile.urlList"
+                    :key="index"
+                    class="text-nowrap"
+                  >
                     {{ value }}
+                    &nbsp;<i
+                      class="fas fa-window-close remove-red fa-lg"
+                      @click="removeUrl(profile.name, value)"
+                    ></i>
                   </li>
                   <br />
                   <div class="input-group">
@@ -91,20 +103,14 @@ export default {
   },
   methods: {
     async addProfile() {
-      const result = await this.$store.dispatch(
+      this.isError = !(await this.$store.dispatch(
         'profile/addProfile',
         this.profileName
-      )
+      ))
+      // 入力値をクリア
       this.profileName = ''
-      if (result) {
-        this.isError = false
-      } else {
-        this.isError = true
-      }
     },
     addUrl(profileName) {
-      // eslint-disable-next-line no-console
-      console.log(this.urls[profileName])
       this.$store.dispatch('profile/addUrl', {
         name: profileName,
         url: this.urls[profileName]
@@ -113,6 +119,21 @@ export default {
     inputUrl(url, profileName) {
       this.urls[profileName] = url
     },
+    removeProfile(name) {
+      const res = confirm('「' + name + '」を削除します')
+      if (res) {
+        this.$store.commit('profile/removeProfile', name)
+      }
+    },
+    removeUrl(removeName, removeUrl) {
+      const res = confirm('選択したURLを削除します')
+      if (res) {
+        this.$store.commit('profile/removeUrl', {
+          name: removeName,
+          url: removeUrl
+        })
+      }
+    },
     save() {
       this.$store.dispatch('profile/saveProfile')
     }
@@ -120,4 +141,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.remove-red {
+  color: red;
+}
+</style>
