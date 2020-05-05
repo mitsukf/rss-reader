@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "moment-timezone": "^0.5.28",
     "nuxt": "^2.12.2",
+    "nuxt-user-agent": "^1.2.2",
     "rss-parser": "^3.7.6",
     "vue-infinite-loading": "^2.4.5"
   },

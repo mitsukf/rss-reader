@@ -1,22 +1,21 @@
 <template>
   <div>
-    <Nav title="プロファイル編集" :edit="true" />
+    <Nav title="編集" :edit="true" />
     <section class="container-fluid">
       <table class="table no-border">
         <tbody>
           <tr v-for="profile in profileList" :key="profile.name">
             <td class="container-fluid">
               <div class="row">
-                <div class="col-4">
+                <span :class="[$ua.deviceType() === 'pc' ? 'col-8' : 'col-12']">
                   <span class="text-nowrap">
                     {{ profile.name }}
-                    &nbsp;<i
-                      class="fas fa-window-close remove-red fa-lg"
+                    <i
+                      class="fas fa-window-close remove-button fa-lg"
                       @click="removeProfile(profile.name)"
                     ></i>
                   </span>
-                  &nbsp;
-                  <span class="text-nowrap">
+                  <span class="text-nowrap move-button">
                     <i
                       class="fas fa-arrow-circle-up fa-lg"
                       @click="moveProfile(profile.name, true)"
@@ -26,44 +25,52 @@
                       @click="moveProfile(profile.name, false)"
                     ></i>
                   </span>
-                </div>
-                <ul class="col-4">
+                </span>
+              </div>
+              <ul :class="[$ua.deviceType() === 'pc' ? 'col-8' : 'col-12']">
+                <!-- URL表示 -->
+                <div class="url-list">
                   <li
                     v-for="(value, index) in profile.urlList"
                     :key="index"
-                    class="text-nowrap"
+                    style="word-break: break-all;"
                   >
-                    {{ value }}
-                    &nbsp;<i
-                      class="fas fa-window-close remove-red fa-lg"
+                    <a :href="value">{{ value }}</a>
+                    <i
+                      class="fas fa-window-close remove-button fa-lg"
                       @click="removeUrl(profile.name, value)"
                     ></i>
                   </li>
-                  <br />
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="URL"
-                      @input="inputUrl($event.target.value, profile.name)"
-                    />
-                    <div class="input-group-append">
-                      <button
-                        class="btn btn-outline-secondary"
-                        type="button"
-                        @click="addUrl(profile.name)"
-                      >
-                        登録
-                      </button>
-                    </div>
+                </div>
+                <!-- URL入力 -->
+                <div class="input-group url-input">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="URL"
+                    @input="inputUrl($event.target.value, profile.name)"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      @click="addUrl(profile.name)"
+                    >
+                      登録
+                    </button>
                   </div>
-                </ul>
-              </div>
+                </div>
+              </ul>
             </td>
           </tr>
           <tr>
             <td class="container-fluid">
-              <div class="input-group col-8">
+              <div
+                :class="[
+                  'input-group',
+                  $ua.deviceType() === 'pc' ? 'col-8' : 'col-12'
+                ]"
+              >
                 <input
                   v-model="profileName"
                   type="text"
@@ -103,7 +110,8 @@ export default {
     return {
       profileName: '',
       urls: {},
-      isError: false
+      isError: false,
+      isPc: true
     }
   },
   computed: {
@@ -113,6 +121,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('profile/loadProfile')
+    this.isPc = this.$ua.deviceType() === 'pc'
   },
   methods: {
     async addProfile() {
@@ -161,7 +170,18 @@ export default {
 </script>
 
 <style>
-.remove-red {
+.remove-button {
   color: red;
+  margin-left: 10px;
+}
+.move-button {
+  margin-left: 10px;
+}
+.url-list {
+  margin-top: 15px;
+  margin-left: 15px;
+}
+.url-input {
+  margin-top: 15px;
 }
 </style>
