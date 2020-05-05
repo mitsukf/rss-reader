@@ -8,11 +8,24 @@
             <td class="container-fluid">
               <div class="row">
                 <div class="col-4">
-                  {{ profile.name }}
-                  &nbsp;<i
-                    class="fas fa-window-close remove-red fa-lg"
-                    @click="removeProfile(profile.name)"
-                  ></i>
+                  <span class="text-nowrap">
+                    {{ profile.name }}
+                    &nbsp;<i
+                      class="fas fa-window-close remove-red fa-lg"
+                      @click="removeProfile(profile.name)"
+                    ></i>
+                  </span>
+                  &nbsp;
+                  <span class="text-nowrap">
+                    <i
+                      class="fas fa-arrow-circle-up fa-lg"
+                      @click="moveProfile(profile.name, true)"
+                    ></i>
+                    <i
+                      class="fas fa-arrow-circle-down fa-lg"
+                      @click="moveProfile(profile.name, false)"
+                    ></i>
+                  </span>
                 </div>
                 <ul class="col-4">
                   <li
@@ -124,6 +137,12 @@ export default {
       if (res) {
         this.$store.commit('profile/removeProfile', name)
       }
+    },
+    moveProfile(moveName, isMoveUp) {
+      this.$store.dispatch('profile/moveProfile', {
+        name: moveName,
+        isUp: isMoveUp
+      })
     },
     removeUrl(removeName, removeUrl) {
       const res = confirm('選択したURLを削除します')

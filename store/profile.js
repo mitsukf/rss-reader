@@ -23,26 +23,26 @@ export const actions = {
     return true
   },
   // URL登録
-  addUrl({ state, commit }, arg) {
+  addUrl({ commit }, arg) {
     commit('addUrl', { url: arg.url, name: arg.name })
   },
   // profile移動
-  moveProfile({ state, commit }, name, isUp) {
+  moveProfile({ state, commit }, arg) {
     for (let i = 0; i < state.profileList.length; i++) {
-      if (state.profileList[i].name !== name) {
+      if (state.profileList[i].name !== arg.name) {
         continue
       }
 
       // 移動先を設定
-      const dest = isUp ? i - 1 : i + 1
+      const dest = arg.isUp ? i - 1 : i + 1
       if (dest < 0 || dest >= state.profileList.length) {
         // 移動先が不正な場合は終了
         return
       }
 
       // 移動
-      commit('moveProfile', i, dest)
-      break
+      commit('moveProfile', { from: i, to: dest })
+      return
     }
   },
   // profile保存
@@ -111,10 +111,14 @@ export const mutations = {
       }
     })
   },
-  moveProfile(state, from, to) {
-    const tmp = state.profileList[to]
-    state.profileList[to] = state.profileList[from]
-    state.profileList[from] = tmp
+  moveProfile(state, arg) {
+    const tmp = state.profileList[arg.to]
+    state.profileList[arg.to] = state.profileList[arg.from]
+    state.profileList[arg.from] = tmp
+
+    // TODO watch発火のための暫定処理
+    state.profileList.push({})
+    state.profileList.pop()
   },
   loadProfile(state) {
     state.profileList = JSON.parse(localStorage.profileList)
