@@ -73,9 +73,8 @@ export const actions = {
         {
           name: '趣味',
           urlList: [
-            'https://www.4gamer.net/rss/pc/pc_news.xml',
-            'https://www.4gamer.net/rss/ps3/ps3_news.xml',
-            'https://www.4gamer.net/rss/wii/wii_news.xml'
+            'https://www.gamespark.jp/rss/index.rdf',
+            'https://www.4gamer.net/rss/news_topics.xml'
           ]
         }
       ])
