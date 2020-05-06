@@ -9,6 +9,10 @@ function fetchData(url) {
 function formatFeedResponse(data) {
   const feeds = []
   for (const item of data.items) {
+    let date = item.date
+    if (item.pubDate) {
+      date = item.pubDate
+    }
     feeds.push({
       site: {
         name: data.title,
@@ -17,7 +21,7 @@ function formatFeedResponse(data) {
       item: {
         title: item.title,
         link: item.link,
-        date: moment(item.date).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm')
+        date: moment(date).tz('Asia/Tokyo').format('YYYY/MM/DD HH:mm')
       }
     })
   }
