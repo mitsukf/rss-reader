@@ -6,6 +6,7 @@
         <tbody>
           <tr v-for="profile in profileList" :key="profile.name">
             <td class="container-fluid">
+              <!-- プロファイル表示 -->
               <div class="row">
                 <span :class="[$ua.deviceType() === 'pc' ? 'col-8' : 'col-12']">
                   <span class="text-nowrap">
@@ -27,8 +28,8 @@
                   </span>
                 </span>
               </div>
+              <!-- URL表示 -->
               <ul :class="[$ua.deviceType() === 'pc' ? 'col-8' : 'col-12']">
-                <!-- URL表示 -->
                 <div class="url-list">
                   <li
                     v-for="(value, index) in profile.urlList"
@@ -42,8 +43,15 @@
                     ></i>
                   </li>
                 </div>
-                <!-- URL入力 -->
-                <div class="input-group url-input">
+              </ul>
+              <!-- URL入力 -->
+              <div class="row url-input">
+                <div
+                  :class="[
+                    'input-group',
+                    $ua.deviceType() === 'pc' ? 'col-8' : 'col-12'
+                  ]"
+                >
                   <input
                     type="text"
                     class="form-control"
@@ -60,36 +68,52 @@
                     </button>
                   </div>
                 </div>
-              </ul>
+                <div
+                  v-show="
+                    urlStatus.isExistingValidate &&
+                    urlStatus.name == profile.name
+                  "
+                  class="loader"
+                >
+                  Loading
+                </div>
+                <div
+                  v-if="urlStatus.isError && urlStatus.name == profile.name"
+                  class="col-8"
+                  style="color: red; margin-top: 8px;"
+                >
+                  {{ urlStatus.errorMessage }}
+                </div>
+              </div>
             </td>
           </tr>
           <tr>
+            <!-- プロファイル入力 -->
             <td class="container-fluid">
-              <div
-                :class="[
-                  'input-group',
-                  $ua.deviceType() === 'pc' ? 'col-8' : 'col-12'
-                ]"
-              >
-                <input
-                  v-model="profileName"
-                  type="text"
-                  class="form-control"
-                  placeholder="プロファイル名"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    @click="addProfile"
-                  >
-                    登録
-                  </button>
+              <div class="row">
+                <div :class="[$ua.deviceType() === 'pc' ? 'col-8' : 'col-12']">
+                  <div class="input-group">
+                    <input
+                      v-model="profileName"
+                      type="text"
+                      class="form-control"
+                      placeholder="プロファイル名"
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        @click="addProfile"
+                      >
+                        登録
+                      </button>
+                    </div>
+                  </div>
+                  <p v-if="isError" style="color: red; margin-top: 8px;">
+                    空文字または同名のプロファイルは登録できません
+                  </p>
                 </div>
               </div>
-              <p v-if="isError" style="color: red;">
-                空文字または同名のプロファイルは登録できません
-              </p>
             </td>
           </tr>
         </tbody>
@@ -116,7 +140,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      profileList: 'profile/profileList'
+      profileList: 'profile/profileList',
+      urlStatus: 'profile/urlStatus'
     })
   },
   mounted() {

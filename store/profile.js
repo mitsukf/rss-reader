@@ -1,7 +1,12 @@
 export const state = () => ({
   profileList: [],
-  isLoad: false,
-  isEdit: false
+  urlStatus: {
+    name: null,
+    isExistingValidate: false,
+    isError: false,
+    errorMessage: null
+  },
+  isLoad: false
 })
 
 export const actions = {
@@ -23,8 +28,39 @@ export const actions = {
     return true
   },
   // URL登録
-  addUrl({ commit }, arg) {
-    commit('addUrl', { url: arg.url, name: arg.name })
+  async addUrl({ state, commit }, arg) {
+    commit('startUrlCheck', { name: arg.name })
+    // URLバリデーション
+    let judge = true
+    try {
+      const res = await this.$axios.get('/api/validRssUrl', {
+        params: {
+          url: arg.url
+        }
+      })
+      judge = res.data.validate
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err.message)
+    }
+
+    // URL重複チェック
+    state.profileList.map((obj) => {
+      if (obj.name !== arg.name) {
+        return
+      }
+      obj.urlList.map((obj2) => {
+        if (obj2 === arg.url) {
+          // 同URLが存在する場合はエラー
+          judge = false
+        }
+      })
+    })
+    commit('endUrlCheck', { name: arg.name, isError: !judge })
+
+    if (judge) {
+      commit('addUrl', { url: arg.url, name: arg.name })
+    }
   },
   // profile移動
   moveProfile({ state, commit }, arg) {
@@ -122,11 +158,27 @@ export const mutations = {
   loadProfile(state) {
     state.profileList = JSON.parse(localStorage.profileList)
     state.isLoad = true
+  },
+  startUrlCheck(state, arg) {
+    state.urlStatus.name = arg.name
+    state.urlStatus.isExistingValidate = true
+    state.urlStatus.isError = false
+  },
+  endUrlCheck(state, arg) {
+    state.urlStatus.name = arg.name
+    state.urlStatus.isExistingValidate = false
+    if (arg.isError) {
+      state.urlStatus.isError = arg.isError
+      state.urlStatus.errorMessage = 'URL登録に失敗しました'
+    }
   }
 }
 
 export const getters = {
   profileList(state) {
     return state.profileList
+  },
+  urlStatus(state) {
+    return state.urlStatus
   }
 }

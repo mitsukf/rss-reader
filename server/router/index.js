@@ -1,11 +1,11 @@
 const Router = require('express').Router
 
 const getRssItems = require('./get-rss-items')
-const getRssInfo = require('./get-rss-info')
+const validRssUrl = require('./valid-rss-url')
 
 const router = Router()
 
 router.use(getRssItems)
-router.use(getRssInfo)
+router.use(validRssUrl)
 
 module.exports = router
