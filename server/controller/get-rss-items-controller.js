@@ -1,6 +1,6 @@
 import { getRssItemsModel } from '../model/get-rss-items-model'
 
-export async function getRssItemsController(req, res) {
+export async function getRssItemsController(req) {
   const offset = Number.isInteger(Number(req.query.offset))
     ? Number(req.query.offset)
     : 0
@@ -16,8 +16,8 @@ export async function getRssItemsController(req, res) {
   const rssItems = await getRssItemsModel(urlList)
 
   // rssアイテムを切り出し
-  if (offset > rssItems.length) {
-    return []
+  return {
+    rssItems: rssItems.slice(offset, offset + count),
+    end: rssItems.length <= offset + count
   }
-  return rssItems.slice(offset, offset + count)
 }

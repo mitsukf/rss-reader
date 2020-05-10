@@ -2,8 +2,7 @@ export const state = () => ({
   profile: null,
   urlList: [],
   rssList: [],
-  offset: 0,
-  total: 0
+  offset: 0
 })
 
 export const actions = {
@@ -33,15 +32,14 @@ export const actions = {
       })
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(err)
+      console.error(err)
       throw err
     }
 
-    for (const data of res.data) {
-      commit('addRssItem', data)
+    for (const rssItem of res.data.rssItems) {
+      commit('addRssItem', rssItem)
     }
-    commit('setOffset', state.rssList.length)
-    return res.data.length
+    return res.data.end
   }
 }
 
@@ -55,9 +53,7 @@ export const mutations = {
   addRssItem(state, item) {
     item.id = state.rssList.length + 1
     state.rssList.push(item)
-  },
-  setOffset(state, offset) {
-    state.offset = offset
+    state.offset = state.rssList.length
   }
 }
 

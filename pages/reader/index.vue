@@ -2,7 +2,8 @@
   <div>
     <Nav :title="$route.query.profile" />
     <section class="container-fluid bg-secondary" style="padding-left: 20px;">
-      <table class="table">
+      <div class="header-footer">dummy</div>
+      <table class="table" style="margin-bottom: 10px;">
         <tbody>
           <tr v-for="rss in rssList" :key="rss.id">
             <div
@@ -29,11 +30,18 @@
         </tbody>
       </table>
       <client-only>
-        <infinite-loading spinner="circle" @infinite="infiniteHandler">
-          <span slot="no-more">-----読み込み完了-----</span>
-          <span slot="no-results">-----読み込み結果はありません-----</span>
-        </infinite-loading>
+        <div
+          v-if="!isEnd"
+          class="border rounded-lg bg-light"
+          style="margin-bottom: 10px;"
+        >
+          <infinite-loading spinner="circle" @infinite="infiniteHandler">
+            <span slot="no-more"></span>
+            <span slot="no-results"></span>
+          </infinite-loading>
+        </div>
       </client-only>
+      <div class="header-footer">dummy</div>
     </section>
   </div>
 </template>
@@ -51,6 +59,11 @@ export default {
   async fetch({ store, query }) {
     await store.dispatch('reader/readRss', query.profile)
   },
+  data() {
+    return {
+      isEnd: false
+    }
+  },
   computed: {
     ...mapGetters({
       rssList: 'reader/rssList'
@@ -60,8 +73,8 @@ export default {
     async infiniteHandler($state) {
       if (this.loading) return
 
-      const response = await this.get()
-      if (response > 0) {
+      this.isEnd = await this.get()
+      if (!this.isEnd) {
         $state.loaded()
       } else {
         $state.complete()
@@ -84,5 +97,8 @@ export default {
 }
 a.txt3 {
   color: #999999;
+}
+.header-footer {
+  font-size: 0px;
 }
 </style>
