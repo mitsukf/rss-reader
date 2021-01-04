@@ -12,17 +12,28 @@
             >
               <div class="row txt1">
                 <div class="col-4">{{ rss.item.date }}</div>
-                <div class="col-4 txt3">
+                <div class="col-8 txt3 omission">
                   <a :href="rss.site.link" target="_blank" class="txt3">{{
                     rss.site.name
                   }}</a>
                 </div>
               </div>
-              <div class="row txt2">
-                <div class="col-12">
-                  <a :href="rss.item.link" target="_blank">{{
-                    rss.item.title
-                  }}</a>
+              <div v-if="$device.isDesktop">
+                <div class="row txt2">
+                  <div class="col-12">
+                    <a :href="rss.item.link" target="_blank">{{
+                      rss.item.title
+                    }}</a>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <div class="row txt2_sp">
+                  <div class="col-12">
+                    <a :href="rss.item.link" target="_blank">{{
+                      rss.item.title
+                    }}</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,14 +102,23 @@ export default {
 .txt1 {
   font-size: 12px;
   color: #999999;
+  white-space: nowrap;
 }
 .txt2 {
   font-size: 16px;
+}
+.txt2_sp {
+  font-size: 12px;
 }
 a.txt3 {
   color: #999999;
 }
 .header-footer {
   font-size: 0px;
+}
+.omission {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

@@ -49,7 +49,8 @@ module.exports = {
     'nuxt-user-agent',
     'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-device-detect'
   ],
   /*
    ** Axios module configuration
